@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>VIVA智绘工坊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                yellow: '#F7CE00',
+                red: '#E5312F',
+                black: '#000000',
+                purple: '#A855F7',
+                green: '#4ADE80',
+                cream: '#FEFCE8',
+                blue: '#3B82F6'
+              },
+            },
+            animation: {
+              'spin-slow': 'spin 4s linear infinite',
+              'brutalist-pulse': 'brutalist-pulse 1.5s ease-in-out infinite',
+            },
+            keyframes: {
+              'brutalist-pulse': {
+                '0%, 100%': { 
+                  transform: 'scale(1)',
+                  boxShadow: 'none',
+                  backgroundColor: '#ffffff'
+                },
+                '50%': { 
+                  transform: 'scale(1.1)',
+                  boxShadow: '0px 0px 20px 8px rgba(229, 49, 47, 0.4)',
+                  backgroundColor: '#fff1f2'
+                },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+      body {
+        background-color: #F8FAFC;
+        background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+        background-size: 24px 24px;
+        font-family: 'Microsoft YaHei', '微软雅黑', 'Arial', sans-serif;
+      }
+
+      .brutalist-border {
+        border: 3px solid black;
+      }
+
+      .brutalist-shadow {
+        box-shadow: none;
+      }
+
+      .brutalist-shadow-sm {
+        box-shadow: none;
+      }
+
+      .comic-title {
+        font-family: 'Arial', sans-serif;
+        text-transform: uppercase;
+        font-style: normal;
+        letter-spacing: -0.02em;
+      }
+
+      .solid-box-green {
+        border: 3px solid #4ADE80;
+      }
+
+      .solid-box-purple {
+        border: 3px solid #A855F7;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #F1F5F9;
+        border-left: 3px solid black;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: black;
+        border: 2px solid white;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      
+      .brutalist-input:focus {
+        background-color: #FEFCE8;
+        border-color: #000000;
+      }
+
+      /* Ensure clear style baseline */
+      * {
+        font-style: normal !important;
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body class="text-black">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
