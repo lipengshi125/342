@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { 
   Settings2, Sparkles, Video, 
   Loader2, Download,
-  Bot, X, AlertCircle, Plus,
-  RefreshCw, Edit, Maximize2, Headset, Check,
-  Square, CheckSquare, Megaphone, ExternalLink, Lock,
-  History, Copy, ClipboardCheck, Trash2,
+  Bot, X, AlertCircle,
+  RefreshCw, Edit, Maximize2, Check,
+  Square, CheckSquare, Megaphone,
+  Copy, ClipboardCheck, Trash2,
   AlertTriangle, Palette, Bookmark, Wand2, GripVertical, Save,
   Image as ImageIcon, Film, Sun, Moon, Wallet, Send,
   ChevronUp, ChevronDown
@@ -67,19 +67,6 @@ interface SavedPrompt {
 // --- Constants ---
 
 const FIXED_BASE_URL = 'https://www.mxhdai.top';
-
-const ASPECT_RATIO_LABELS: Record<string, string> = {
-  '1:1': '1:1 (正方形)',
-  '2:3': '2:3 (照片)',
-  '3:2': '3:2 (摄影)',
-  '3:4': '3:4 (小红书)',
-  '4:3': '4:3 (早期电视)',
-  '4:5': '4:5 (详情页)',
-  '5:4': '5:4 (装饰画)',
-  '9:16': '9:16 (短视频)',
-  '16:9': '16:9 (电脑壁纸)',
-  '21:9': '21:9 (宽屏电影)',
-};
 
 const EXTENDED_RATIOS = ['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9', '21:9'];
 const GPT1_RATIOS = ['1:1', '2:3', '3:2'];
@@ -407,7 +394,6 @@ const App = () => {
   const [videoRatio, setVideoRatio] = useState('16:9');
   const [activeModal, setActiveModal] = useState<ModalType>('announcement');
   const [previewAsset, setPreviewAsset] = useState<GeneratedAsset | null>(null);
-  const [previewRefImage, setPreviewRefImage] = useState<ReferenceImage | null>(null);
   const [config, setConfig] = useState<AppConfig>({ baseUrl: FIXED_BASE_URL, apiKey: '' });
   const [tempConfig, setTempConfig] = useState<AppConfig>(config);
   const [prompt, setPrompt] = useState('');
@@ -1183,8 +1169,6 @@ const App = () => {
 
   const currentImageModel = MODELS.find(m => m.id === selectedModel);
   const currentVideoModel = VIDEO_MODELS.find(m => m.id === selectedVideoModel);
-  const labelClass = "font-bold text-[11px] uppercase tracking-wider text-slate-500 mb-1 block";
-  const selectClass = "w-full p-2 border border-slate-300 dark:border-zinc-700 rounded-lg text-sm bg-slate-50 dark:bg-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400";
   
   return (
     <div className={`min-h-screen flex flex-col overflow-hidden relative ${isDarkMode ? 'dark bg-zinc-900 text-white' : 'bg-[#F1F5F9] text-black'}`}
@@ -1223,10 +1207,10 @@ const App = () => {
                  {/* Left empty for balance */}
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={handleSelectAll} className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 dark:text-white shadow-sm hover:shadow transition-all">
+                <button onClick={handleSelectAll} className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg border border-slate-300 dark:border-zinc-700 bg-transparent dark:bg-transparent dark:text-white shadow-sm hover:shadow transition-all">
                    {selectedAssetIds.size === generatedAssets.length && generatedAssets.length > 0 ? <CheckSquare className="w-4 h-4"/> : <Square className="w-4 h-4"/>} 全选
                 </button>
-                <span className="px-4 py-2 text-xs font-bold rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 dark:text-white shadow-sm">
+                <span className="px-4 py-2 text-xs font-bold rounded-lg border border-slate-300 dark:border-zinc-700 bg-transparent dark:bg-transparent dark:text-white shadow-sm">
                    数量 ({generatedAssets.length})
                 </span>
                 {selectedAssetIds.size > 0 && (
@@ -1417,42 +1401,47 @@ const App = () => {
                  </div>
              )}
 
-             {/* Input Area */}
-             <div className="flex items-end gap-2 p-3">
-                 <div className="flex flex-col gap-2">
-                    <label className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer text-slate-500 dark:text-zinc-400" title="上传参考图">
-                        <ImageIcon className="w-5 h-5" />
-                        <input type="file" multiple={mainCategory === 'image'} className="hidden" onChange={handleImageUpload} />
-                    </label>
-                    <button onClick={() => setActiveModal('library')} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors text-slate-500 dark:text-zinc-400" title="提示词库">
-                        <Bookmark className="w-5 h-5" />
-                    </button>
-                    <button onClick={() => setActiveModal('styles')} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors text-slate-500 dark:text-zinc-400" title="风格选择">
-                        <Palette className="w-5 h-5" />
-                    </button>
-                 </div>
+             {/* Toolbar Row */}
+             <div className="flex items-center gap-2 px-4 pt-2">
+                <button onClick={() => setActiveModal('library')} className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors text-slate-500 dark:text-zinc-400 flex items-center gap-1 text-xs font-bold" title="提示词库">
+                    <Bookmark className="w-4 h-4" /> <span className="hidden sm:inline">词库</span>
+                </button>
+                <button onClick={() => setActiveModal('styles')} className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors text-slate-500 dark:text-zinc-400 flex items-center gap-1 text-xs font-bold" title="风格选择">
+                    <Palette className="w-4 h-4" /> <span className="hidden sm:inline">风格</span>
+                </button>
+                
+                <div className="h-4 w-px bg-slate-200 dark:bg-zinc-700 mx-1"></div>
 
-                 <textarea 
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="请输入..."
-                    className="flex-1 max-h-32 min-h-[50px] bg-transparent border-none outline-none resize-none pt-1 pb-2 text-sm text-slate-800 dark:text-zinc-200 placeholder:text-slate-400 dark:placeholder:text-zinc-500 leading-relaxed placeholder:animate-pulse"
-                 />
-                 
-                 <div className="flex flex-col gap-2">
-                    <button onClick={savePromptToLibrary} disabled={!prompt.trim()} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors text-slate-400 hover:text-cyan-500 disabled:opacity-30" title="保存当前提示词">
-                        <Save className="w-5 h-5" />
-                    </button>
-                    <button onClick={optimizePrompt} disabled={isOptimizing || !prompt.trim()} className={`p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors ${isOptimizing ? 'text-cyan-500' : 'text-slate-400 hover:text-purple-500'} disabled:opacity-30`} title="AI优化">
-                        {isOptimizing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Wand2 className="w-5 h-5" />}
-                    </button>
-                    <button 
-                        onClick={() => executeGeneration()} 
-                        className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center hover:scale-105 transition-transform active:scale-95"
-                    >
-                        <Send className="w-5 h-5 ml-0.5" />
-                    </button>
+                <button onClick={savePromptToLibrary} disabled={!prompt.trim()} className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors text-slate-400 hover:text-cyan-500 disabled:opacity-30 flex items-center gap-1 text-xs font-bold" title="保存当前提示词">
+                    <Save className="w-4 h-4" /> <span className="hidden sm:inline">保存</span>
+                </button>
+                <button onClick={optimizePrompt} disabled={isOptimizing || !prompt.trim()} className={`p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors ${isOptimizing ? 'text-cyan-500' : 'text-slate-400 hover:text-purple-500'} disabled:opacity-30 flex items-center gap-1 text-xs font-bold`} title="AI优化">
+                    {isOptimizing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />} <span className="hidden sm:inline">优化</span>
+                </button>
+             </div>
+
+             {/* Input Area */}
+             <div className="flex items-end gap-3 p-3">
+                 <label className="mb-1 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer text-slate-500 dark:text-zinc-400" title="上传参考图">
+                    <ImageIcon className="w-6 h-6" />
+                    <input type="file" multiple={mainCategory === 'image'} className="hidden" onChange={handleImageUpload} />
+                 </label>
+
+                 <div className="flex-1 bg-slate-100 dark:bg-zinc-900/50 rounded-2xl border-2 border-transparent focus-within:border-cyan-400/50 transition-all">
+                     <textarea 
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        placeholder="请输入..."
+                        className="w-full max-h-32 min-h-[48px] bg-transparent border-none outline-none resize-none px-4 py-3 text-sm text-slate-800 dark:text-zinc-200 placeholder:text-slate-400 dark:placeholder:text-zinc-500 leading-relaxed placeholder:animate-pulse"
+                     />
                  </div>
+                 
+                 <button 
+                    onClick={() => executeGeneration()} 
+                    className="mb-1 w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center hover:scale-105 transition-transform active:scale-95"
+                >
+                    <Send className="w-5 h-5 ml-0.5" />
+                </button>
              </div>
              
              {error && <div className="px-4 pb-2 text-xs text-red-500 font-bold">{error}</div>}
@@ -1476,13 +1465,13 @@ const App = () => {
       {activeModal === 'announcement' && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="w-[550px] bg-white dark:bg-zinc-800 border-4 border-black dark:border-zinc-600 brutalist-shadow animate-in zoom-in-95 relative">
-            <ModalHeader title="最新公告 / ANNOUNCEMENT" icon={Megaphone} onClose={() => setActiveModal(null)} />
+            <ModalHeader title="最新公告" icon={Megaphone} onClose={() => setActiveModal(null)} />
             <div className="p-8 space-y-6">
               
               <div className="bg-gradient-to-r from-cyan-400 to-emerald-500 text-white p-4 border-2 border-black dark:border-zinc-600 brutalist-shadow-sm flex items-center justify-center gap-2 animate-pulse">
                 <AlertCircle className="w-6 h-6 flex-shrink-0" />
                 <span className="font-bold text-lg italic uppercase tracking-wider text-center">
-                  首次使用前，请设置API令牌
+                  首次使用请登录！！！
                 </span>
               </div>
 
@@ -1543,9 +1532,9 @@ const App = () => {
             <ModalHeader title="Usage Flow (使用流程)" icon={Megaphone} onClose={() => setActiveModal(null)} />
             <div className="p-8 space-y-6">
               {[
-                { n: '1', t: '注册与令牌', d: <>前往主站 <a href="https://www.mxhdai.top" target="_blank" className="text-blue-600 font-bold underline italic">www.mxhdai.top</a> 注册并创建您的专属令牌。</> },
-                { n: '2', t: '配置使用', d: '点击本站上方设置 按钮，输入令牌即可开始创作。' },
-                { n: '3', t: '查询日志', d: '使用记录及额度消耗情况请在主站后台查询。' }
+                { n: '1', t: '教程', d: '点击登录按钮，输入key点击登录，下方描述提示词点击发送生成视频。' },
+                { n: '2', t: '获取key', d: <>前往主站 <a href="www.mxhdai.top" target="_blank" className="text-blue-600 font-bold underline italic">www.mxhdai.top</a> 获取key</> },
+                { n: '或', t: '联系24在线客服', d: <> <a href="https://qm.qq.com/q/jg2RcviAca" target="_blank" className="text-blue-600 font-bold underline italic">QQ： 1401906087</a> <a href="https://lsky.zhongzhuan.chat/i/2025/12/31/6954c34156318.jpg" target="_blank" className="text-blue-600 font-bold underline italic">vx： LPS3434</a> 获取key</> }
               ].map(step => (
                 <div key={step.n} className="relative bg-white dark:bg-zinc-700 border-2 border-black dark:border-zinc-500 p-6 pt-8 brutalist-shadow-sm">
                   <div className="absolute -top-3 -left-3 w-8 h-8 bg-black dark:bg-zinc-900 text-white rounded-full flex items-center justify-center text-lg italic font-bold border-2 border-white">{step.n}</div>
@@ -1585,11 +1574,11 @@ const App = () => {
                 {
                   category: '视频模型',
                   items: [
+                    { m: 'Sora 2', p: '0.08元/条' },
+                    { m: 'Sora 2 Pro', p: '2.52元/条' },
                     { m: 'VEO 3.1 FAST', p: '0.11元/次' },
                     { m: 'VEO 3.1 PRO', p: '2.45元/次' },
                     { m: 'Jimeng Video 3.0', p: '0.266元/条' },
-                    { m: 'Sora 2', p: '0.08元/条' },
-                    { m: 'Sora 2 Pro', p: '2.52元/条' },
                     { m: 'Grok Video 3', p: '0.14元/条' },
                   ]
                 }
