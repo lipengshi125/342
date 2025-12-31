@@ -1554,9 +1554,14 @@ const App = () => {
             <div className="p-0 max-h-[60vh] overflow-y-auto no-scrollbar">
               {[
                 {
-                  category: 'AI优化',
+                  category: '视频模型',
                   items: [
-                    { m: 'gemini-3-flash-preview', p: '0.002元/次' }
+                    { m: 'Sora 2', p: '0.08元/条' },
+                    { m: 'Sora 2 Pro', p: '2.52元/条' },
+                    { m: 'VEO 3.1 FAST', p: '0.11元/次' },
+                    { m: 'VEO 3.1 PRO', p: '2.45元/次' },
+                    { m: 'Jimeng Video 3.0', p: '0.266元/条' },
+                    { m: 'Grok Video 3', p: '0.14元/条' },
                   ]
                 },
                 {
@@ -1572,14 +1577,9 @@ const App = () => {
                   ]
                 },
                 {
-                  category: '视频模型',
+                  category: 'AI优化',
                   items: [
-                    { m: 'Sora 2', p: '0.08元/条' },
-                    { m: 'Sora 2 Pro', p: '2.52元/条' },
-                    { m: 'VEO 3.1 FAST', p: '0.11元/次' },
-                    { m: 'VEO 3.1 PRO', p: '2.45元/次' },
-                    { m: 'Jimeng Video 3.0', p: '0.266元/条' },
-                    { m: 'Grok Video 3', p: '0.14元/条' },
+                    { m: 'gemini-3-flash-preview', p: '0.002元/次' }
                   ]
                 }
               ].map((cat) => (
